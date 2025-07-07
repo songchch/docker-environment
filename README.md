@@ -1,2 +1,2 @@
-# TA_training_Github
-repo for TA training
+# TA_training_docker
+repo for TA training - docker
