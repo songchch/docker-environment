@@ -7,7 +7,6 @@ USERNAME="User(default)"
 HOSTNAME="aoc2026"
 # MOUNTS_SRC="/c/Users/USER/OneDrive/桌面/TA_training_docker"
 # MOUNTS_DST="/workspace"
-MOUNTS_DST="/home/$USERNAME/workspace"
 
 # 檢查 image 是否存在
 function check_image_exists() {
@@ -27,7 +26,7 @@ function build_image() {
     fi
 
     echo "🚧 Building Docker image '$IMAGE_NAME'..."
-    docker build -t "$IMAGE_NAME" .
+    docker build --build-arg USERNAME="$USERNAME" -t "$IMAGE_NAME" .
     echo "✅ Image '$IMAGE_NAME' built successfully."
 }
 
@@ -56,7 +55,7 @@ function run_container() {
         docker run -it --name "$CONTAINER_NAME" \
             --hostname "$HOSTNAME" \
             --env USER="$USERNAME" \
-            --mount type=bind,source="$(pwd)",target="$MOUNTS_DST" \
+            --mount type=bind,source="$(pwd)",target="/home/$USERNAME/workspace" \
             "$IMAGE_NAME" \
             bash
 

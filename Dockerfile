@@ -1,18 +1,4 @@
 # ==== Stage: base ====
-#FROM ubuntu:24.04 AS base
-#
-## 非互動模式（可選，但不影響最小建構）
-#ENV DEBIAN_FRONTEND=noninteractive
-#
-## 安裝 bash（Ubuntu 通常已內建，但保險起見加上）
-#RUN apt-get update && apt-get install -y \
-#    bash \
-#    && rm -rf /var/lib/apt/lists/*
-#
-## 設定 container 預設執行 bash
-#CMD ["/bin/bash"]
-
-# ==== Stage: base ====
 FROM ubuntu:24.04 AS base
 
 # 1️⃣ 設定環境變數：非互動模式
