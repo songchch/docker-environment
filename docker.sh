@@ -48,8 +48,10 @@ function rebuild() {
 # 執行 container
 function run_container() {
     # 判斷 container 狀態
-    CONTAINER_STATUS=$(docker ps -a --filter "name=^/${CONTAINER_NAME}$" --format "{{.Status}}")
-
+    CONTAINER_STATUS=$(docker ps -a --filter "name=${CONTAINER_NAME}$" --format "{{.Status}}")
+    
+    echo "CONTAINER_STATUS is = $CONTAINER_STATUS"
+    
     if [[ "$CONTAINER_STATUS" == "" ]]; then
         echo "🚀 Container not found. Creating and running new container..."
         echo "PWD: $(pwd)"
