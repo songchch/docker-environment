@@ -5,6 +5,7 @@ IMAGE_NAME="aoc2026-env"
 CONTAINER_NAME="aoc2026-container"
 USERNAME="User(default)"
 HOSTNAME="aoc2026"
+STAGE_NAME="final"
 # MOUNTS_SRC="/c/Users/USER/OneDrive/桌面/TA_training_docker"
 # MOUNTS_DST="/workspace"
 
@@ -26,7 +27,7 @@ function build_image() {
     fi
 
     echo "🚧 Building Docker image '$IMAGE_NAME'..."
-    docker build --build-arg USERNAME="$USERNAME" -t "$IMAGE_NAME" .
+    docker build --target "$STAGE_NAME" --build-arg USERNAME="$USERNAME" -t "$IMAGE_NAME" .
     echo "✅ Image '$IMAGE_NAME' built successfully."
 }
 
@@ -110,6 +111,10 @@ function parse_args() {
                 MOUNTS+=("$2")
                 shift 2
                 ;;
+            --stage-name)
+                STAGE_NAME="$2"
+                shift 2
+                ;;
             *)
                 echo "❌ Unknown argument: $1"
                 exit 1
@@ -137,7 +142,7 @@ function main() {
             ;;
         *)
             echo "用法："
-            echo "  ./docker.sh build --image-name IMAGE"
+            echo "  ./docker.sh build --stage-name STAGE --username USER --image-name IMAGE"
             echo "  ./docker.sh run --username \$USER --mount path1 --mount path2 --image-name IMAGE --cont-name CONTAINER"
             echo "  ./docker.sh clean"
             echo "  ./docker.sh rebuild"
