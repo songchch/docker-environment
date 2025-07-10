@@ -100,7 +100,7 @@ FROM common_pkg_provider AS verilator_provider
 USER root
 
 RUN apt-get update && apt-get install -y \
-    git make autoconf g++ flex bison \
+    git make autoconf g++ flex bison help2man \
     && git clone https://github.com/verilator/verilator.git /tmp/verilator \
     && cd /tmp/verilator && git checkout v5.024 \
     && autoconf && ./configure && make -j$(nproc) && make install \
