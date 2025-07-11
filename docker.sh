@@ -73,6 +73,20 @@ function run_container() {
     fi
 }
 
+function stop_container() {
+    CONTAINER_STATUS=$(docker ps -a --filter "name=${CONTAINER_NAME}$" --format "{{.Status}}")
+    
+    if [[ "$CONTAINER_STATUS" == "" ]]; then
+        echo "❌ Container '$CONTAINER_NAME' does not exist."
+    elif [[ "$CONTAINER_STATUS" == Up* ]]; then
+        echo "⏹️ Stopping container '$CONTAINER_NAME'..."
+        docker stop "$CONTAINER_NAME"
+        echo "✅ Container '$CONTAINER_NAME' stopped."
+    else
+        echo "ℹ️ Container '$CONTAINER_NAME' is not running."
+    fi
+} 
+
 # 處理 CLI 參數
 function parse_args() {
     while [[ $# -gt 0 ]]; do
@@ -83,6 +97,10 @@ function parse_args() {
                 ;;
             run)
                 CMD="run"
+                shift
+                ;;
+            stop)
+                CMD="stop"
                 shift
                 ;;
             clean)
@@ -135,6 +153,9 @@ function main() {
             ;;
         run)
             run_container
+            ;;
+        stop)
+            stop_container
             ;;
         clean)
             clean_all
