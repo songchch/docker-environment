@@ -28,7 +28,7 @@ USER $USERNAME
 
 # 5️⃣ 設定預設工作目錄與 shell
 WORKDIR /home/$USERNAME
-CMD ["/bin/bash"]"
+CMD ["/bin/bash"]
 # -------------------------------------------------------
 # ==== Stage: common_pkg_provider ====
 FROM base AS common_pkg_provider
@@ -120,7 +120,9 @@ COPY --from=systemc_provider /usr/local/bin/systemc-config /usr/local/bin/system
 # 設定 Conda 路徑
 ENV PATH=/opt/conda/bin:$PATH
 
-# 切回 devuser
-USER devuser
-WORKDIR /home/devuser
+# 4️⃣ 切換使用者與工作目錄
+USER $USERNAME
+
+# 5️⃣ 設定預設工作目錄與 shell
+WORKDIR /home/$USERNAME
 CMD ["/bin/bash"]
