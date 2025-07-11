@@ -112,10 +112,16 @@ RUN apt-get update && apt-get install -y \
 FROM common_pkg_provider AS systemc_provider
 USER root
 
-WORKDIR /tmp
-RUN wget https://www.accellera.org/images/downloads/standards/systemc/systemc-2.3.4.tar.gz && \
+RUN apt-get update && \
+    apt-get install -y autoconf automake libtool && \
+    rm -rf /var/lib/apt/lists/*
+
+# WORKDIR /tmp
+RUN cd /tmp && \
+    wget https://github.com/accellera-official/systemc/archive/refs/tags/2.3.4.tar.gz -O systemc-2.3.4.tar.gz && \ 
     tar -xzf systemc-2.3.4.tar.gz && \
     cd systemc-2.3.4 && \
+    autoreconf -i && \
     mkdir build && cd build && \
     ../configure --prefix=/opt/systemc && \
     make -j$(nproc) && make install && \
