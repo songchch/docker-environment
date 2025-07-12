@@ -217,6 +217,80 @@ change_verilator() {
     fi
 }
 
+systemc_example() {
+    echo "=== Building SystemC example ==="
+    TMPDIR=$(mktemp -d)
+    cd "$TMPDIR"
+    cat > helloworld.cpp <<'EOF'
+#include <systemc>
+using namespace sc_core;
+
+void hello1() {
+    std::cout << "Hello world using approach 1" << std::endl;
+}
+
+struct HelloWorld : sc_module {
+    SC_CTOR(HelloWorld) {
+        SC_METHOD(hello2);
+    }
+    void hello2(void) {
+        std::cout << "Hello world using approach 2" << std::endl;
+    }
+};
+
+int sc_main(int, char*[]) {
+    hello1();
+    HelloWorld helloworld("helloworld");
+    sc_start();
+    return 0;
+}
+EOF
+
+    cat > Makefile <<'EOF'
+SYSTEMC_DIR = /opt/systemc
+
+BUILDFLAGS  = -g3
+CXX         = g++ -std=c++17
+
+INCFLAGS    = -I. -I${SYSTEMC_DIR}/include -DSC_INCLUDE_FX
+LDFLAGS     = -L${SYSTEMC_DIR}/lib-linux64 -Wl,-rpath,${SYSTEMC_DIR}/lib-linux64 -lsystemc -lm
+
+PROJECT     = out
+SRC_CPPHEAD = 
+SRC_CPP     =  
+HEADERS     = 
+MAIN        = helloworld.cpp 
+OBJECTS     = $(SRC_CPPHEAD:=.o) $(SRC_CPP:cpp=o)
+
+export LD_LIBRARY_PATH := $(SYSTEMC_DIR)/lib-linux64:$(LD_LIBRARY_PATH)
+
+EXE = $(PROJECT)
+
+all: $(EXE)
+
+$(EXE): $(MAIN) $(OBJECTS) $(HEADERS)
+	@echo "$@ building..."
+	$(CXX) $(INCFLAGS) $(MAIN) $(OBJECTS) $(LDFLAGS) -o $@
+	@echo ""
+	@echo "$@ build done successfully..."
+	@echo ""
+	./out
+
+%.o:%.cpp %.h
+	@echo "Compiling $< ..."
+	$(CXX) -c $< $(INCFLAGS)
+
+clean:
+	rm -f $(EXE)
+	rm -f *.o
+EOF
+
+    make all
+    cd -
+    rm -rf "$TMPDIR"
+}
+
+
 case "$1" in
     help|-h|--help|"")
         help
@@ -235,6 +309,9 @@ case "$1" in
         ;;
     change-verilator)
         change_verilator "$2"
+        ;;
+    systemc-example)
+        systemc_example
         ;;
     *)
         echo "Unknown command: $1"

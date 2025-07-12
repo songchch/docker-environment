@@ -17,7 +17,6 @@ MAIN        = helloworld.cpp
 OBJECTS     = $(SRC_CPPHEAD:=.o) $(SRC_CPP:cpp=o)
 
 # 執行時動態庫路徑
-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/systemc/cur/lib-linux64
 export LD_LIBRARY_PATH := $(SYSTEMC_DIR)/lib-linux64:$(LD_LIBRARY_PATH)
 
 EXE = $(PROJECT)
@@ -30,6 +29,7 @@ $(EXE): $(MAIN) $(OBJECTS) $(HEADERS)
 	@echo ""
 	@echo "$@ build done successfully..."
 	@echo ""
+	./out
 
 %.o:%.cpp %.h
 	@echo "Compiling $< ..."
