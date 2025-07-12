@@ -92,7 +92,7 @@ RUN cd /tmp && \
     mkdir build && cd build && \
     ../configure --prefix=/opt/systemc && \
     make -j$(nproc) && make install && \
-    ln -s /opt/systemc/bin/systemc-config /usr/local/bin/systemc-config && \
+    # ln -s /opt/systemc/bin/systemc-config /usr/local/bin/systemc-config && \
     rm -rf /tmp/systemc-2.3.4*
 
 # -------------------------------------------------------
@@ -104,18 +104,20 @@ USER root
 # 複製已安裝內容
 COPY --from=common_pkg_provider /opt/conda /opt/conda
 COPY --from=common_pkg_provider /etc/profile.d/conda.sh /etc/profile.d/conda.sh
-COPY --from=common_pkg_provider /usr/bin/python3 /usr/bin/python3
-COPY --from=common_pkg_provider /usr/bin/pip3 /usr/bin/pip3
-COPY --from=common_pkg_provider /usr/bin/vim /usr/bin/vim
-COPY --from=common_pkg_provider /usr/bin/git /usr/bin/git
-COPY --from=common_pkg_provider /usr/bin/curl /usr/bin/curl
-COPY --from=common_pkg_provider /usr/bin/wget /usr/bin/wget
-COPY --from=common_pkg_provider /usr/bin/make /usr/bin/make
-COPY --from=common_pkg_provider /usr/bin/gcc /usr/bin/gcc
-COPY --from=common_pkg_provider /usr/bin/g++ /usr/bin/g++
-COPY --from=verilator_provider /usr/local/bin/verilator /usr/local/bin/verilator
+# COPY --from=common_pkg_provider /usr/bin/python3 /usr/bin/python3
+# COPY --from=common_pkg_provider /usr/bin/pip3 /usr/bin/pip3
+# COPY --from=common_pkg_provider /usr/bin/vim /usr/bin/vim
+# COPY --from=common_pkg_provider /usr/bin/git /usr/bin/git
+# COPY --from=common_pkg_provider /usr/bin/curl /usr/bin/curl
+# COPY --from=common_pkg_provider /usr/bin/wget /usr/bin/wget
+# COPY --from=common_pkg_provider /usr/bin/make /usr/bin/make
+# COPY --from=common_pkg_provider /usr/bin/gcc /usr/bin/gcc
+# COPY --from=common_pkg_provider /usr/bin/g++ /usr/bin/g++
+COPY --from=common_pkg_provider /usr /usr
+# COPY --from=verilator_provider /usr/local/bin /usr/local/bin
+COPY --from=verilator_provider /usr/local /usr/local
 COPY --from=systemc_provider /opt/systemc /opt/systemc
-COPY --from=systemc_provider /usr/local/bin/systemc-config /usr/local/bin/systemc-config
+# COPY --from=systemc_provider /usr/local/bin/systemc-config /usr/local/bin/systemc-config
 
 # 設定 Conda 路徑
 ENV PATH=/opt/conda/bin:$PATH
