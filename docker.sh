@@ -164,7 +164,7 @@ function main() {
             rebuild
             ;;
         *)
-            echo "用法："
+            echo "Usage: "
             echo "  ./docker.sh build --stage-name STAGE --username USER --image-name IMAGE"
             echo "  ./docker.sh run --username USER --mount path1 --mount path2 --image-name IMAGE --cont-name CONTAINER"
             echo "  ./docker.sh stop --cont-name CONTAINER"

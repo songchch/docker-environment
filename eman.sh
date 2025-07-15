@@ -14,6 +14,7 @@ Usage: ./eman.sh <command>
     ./eman.sh c-compiler-version           : print the version of default C compiler and GNU Make
     ./eman.sh c-compiler-example           : compile and run the C/C++ example(s)
 
+    ./eman.sh systemc-example              : : compile and run the SystemC example(s)
 EOF
 }
 
