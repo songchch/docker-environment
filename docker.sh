@@ -58,7 +58,7 @@ function run_container() {
         docker run -it --name "$CONTAINER_NAME" \
             --hostname "$HOSTNAME" \
             --env USER="$USERNAME" \
-            --mount type=bind,source="$(pwd)",target="/home/$USERNAME/workspace" \
+            --mount type=bind,source="$(pwd)/workspace",target="/home/$USERNAME/workspace" \
             "$IMAGE_NAME" \
             bash
 
@@ -127,10 +127,6 @@ function parse_args() {
                 HOSTNAME="$2"
                 shift 2
                 ;;
-            --mount)
-                MOUNTS+=("$2")
-                shift 2
-                ;;
             --stage-name)
                 STAGE_NAME="$2"
                 shift 2
@@ -166,7 +162,7 @@ function main() {
         *)
             echo "Usage: "
             echo "  ./docker.sh build --stage-name STAGE --username USER --image-name IMAGE"
-            echo "  ./docker.sh run --username USER --mount path1 --mount path2 --image-name IMAGE --cont-name CONTAINER"
+            echo "  ./docker.sh run --username USER --image-name IMAGE --cont-name CONTAINER"
             echo "  ./docker.sh stop --cont-name CONTAINER"
             echo "  ./docker.sh clean"
             echo "  ./docker.sh rebuild"
