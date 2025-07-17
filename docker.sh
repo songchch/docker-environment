@@ -62,7 +62,7 @@ function run_container() {
         echo "PWD: $(pwd)"
         docker run -it --name "$CONTAINER_NAME" \
             --hostname "$HOSTNAME" \
-            --env USER="$USERNAME" \
+            --user "$USERNAME" \
             --mount type=bind,source="$(pwd)/workspace",target="/home/$USERNAME/workspace" \
             "$IMAGE_NAME" \
             bash
