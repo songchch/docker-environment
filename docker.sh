@@ -12,10 +12,10 @@ STAGE_NAME="final"
 # 檢查 image 是否存在
 function check_image_exists() {
     if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
-        echo "✅ Image '$IMAGE_NAME' already exists."
-        echo "🧹 若要刪除並重建，請執行: ./docker.sh rebuild"
+        echo "Image '$IMAGE_NAME' already exists."
         return 0
     else
+        echo "Image '$IMAGE_NAME' does not exist, please run: ./docker.sh build"
         return 1
     fi
 }
@@ -49,7 +49,6 @@ function rebuild() {
 function run_container() {
     # 判斷 image 是否存在
     if ! check_image_exists; then
-        echo "Image '$IMAGE_NAME' 不存在，請先執行: ./docker.sh build"
         return 1
     fi
 
