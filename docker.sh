@@ -47,6 +47,12 @@ function rebuild() {
 
 # 執行 container
 function run_container() {
+    # 判斷 image 是否存在
+    if ! check_image_exists; then
+        echo "Image '$IMAGE_NAME' 不存在，請先執行: ./docker.sh build"
+        return 1
+    fi
+
     # 判斷 container 狀態
     CONTAINER_STATUS=$(docker ps -a --filter "name=${CONTAINER_NAME}$" --format "{{.Status}}")
     
