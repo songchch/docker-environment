@@ -8,13 +8,13 @@ help() {
 Usage: ./eman.sh <command>
     ./eman.sh help                         : show this help message
     ./eman.sh check-verilator              : print the version of the first found Verilator
-    ./eman.sh verilator-example            : compile and run the Verilator example(s)
+    ./eman.sh verilator-example            : compile and run the Verilator example
     ./eman.sh change-verilator <VERSION>   : change default Verilator to different version. If not installed, install it.
 
     ./eman.sh c-compiler-version           : print the version of default C compiler and GNU Make
-    ./eman.sh c-compiler-example           : compile and run the C/C++ example(s)
+    ./eman.sh c-compiler-example           : compile and run the C example
 
-    ./eman.sh systemc-example              : compile and run the SystemC example(s)
+    ./eman.sh systemc-example              : compile and run the SystemC example
 EOF
 }
 
