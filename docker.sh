@@ -11,12 +11,19 @@ STAGE_NAME="final"
 
 # 檢查 image 是否存在
 function check_image_exists() {
+    CONTAINER_IMAGE=$(docker inspect --format '{{.Config.Image}}' "$CONTAINER_NAME" 2>/dev/null)
+
     if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
         echo "Image '$IMAGE_NAME' already exists."
         return 0
     else
-        echo "Image '$IMAGE_NAME' does not exist, please run: ./docker.sh build"
-        return 1
+        if docker image inspect "$CONTAINER_IMAGE" > /dev/null 2>&1; then
+            echo "Image '$CONTAINER_IMAGE' already exists."
+            return 0
+        else
+            echo "Image does not exist, please run: ./docker.sh build"
+            return 1
+        fi
     fi
 }
 
@@ -49,7 +56,7 @@ function rebuild() {
 function run_container() {
     # 判斷 image 是否存在
     if ! check_image_exists; then
-        return 1
+        return
     fi
 
     # 判斷 container 狀態

@@ -2,7 +2,7 @@
 ## Usage of `docker.sh`
 * build an image
 ``` bash
-./docker.sh build --stage-name STAGE --username USER --image-name IMAGE"
+./docker.sh build --stage-name STAGE --username USER --image-name IMAGE
 ```
 * run a container
 ``` bash
