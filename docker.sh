@@ -13,6 +13,8 @@ STAGE_NAME="final"
 function check_image_exists() {
     CONTAINER_IMAGE=$(docker inspect --format '{{.Config.Image}}' "$CONTAINER_NAME" 2>/dev/null)
 
+    # echo "Checking if image '$IMAGE_NAME' or '$CONTAINER_IMAGE' exists..."
+
     if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
         echo "Image '$IMAGE_NAME' already exists."
         return 0
@@ -86,6 +88,11 @@ function run_container() {
 }
 
 function stop_container() {
+    # 判斷 image 是否存在
+    if ! check_image_exists; then
+        return
+    fi
+
     CONTAINER_STATUS=$(docker ps -a --filter "name=${CONTAINER_NAME}$" --format "{{.Status}}")
     
     if [[ "$CONTAINER_STATUS" == "" ]]; then
